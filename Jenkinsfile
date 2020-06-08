@@ -1,7 +1,7 @@
 pipeline {
     agent any
+    def app
     stages {
-        def app
         stage('Clone repository') {
             /* Let's make sure we have the repository cloned to our workspace */
 	    steps {
@@ -20,10 +20,11 @@ pipeline {
         stage('Test image') {
             /* Ideally, we would run a test framework against our image.
              * Just an example */
-
-            app.inside {
-                sh 'echo "Tests passed"'
-            }
+	    steps {
+                app.inside {
+                    sh 'echo "Tests passed"'
+                }
+	    }
         }
 
         stage('Run image') {
@@ -38,10 +39,12 @@ pipeline {
              * First, the incremental build number from Jenkins
              * Second, the 'latest' tag.
              * Pushing multiple tags is cheap, as all the layers are reused. */
-            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                app.push("${env.BUILD_NUMBER}")
-                app.push("latest")
-            }
+	    steps {
+                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                    app.push("${env.BUILD_NUMBER}")
+                    app.push("latest")
+                }
+	    }
         }
     }
 
