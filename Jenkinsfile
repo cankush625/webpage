@@ -21,9 +21,11 @@ pipeline {
             /* Ideally, we would run a test framework against our image.
              * Just an example */
 	    steps {
-                app.inside {
-                    sh 'echo "Tests passed"'
-                }
+		script {
+                    app.inside {
+                        sh 'echo "Tests passed"'
+                    }
+		}
 	    }
         }
 
@@ -40,10 +42,12 @@ pipeline {
              * Second, the 'latest' tag.
              * Pushing multiple tags is cheap, as all the layers are reused. */
 	    steps {
-                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                    app.push("${env.BUILD_NUMBER}")
-                    app.push("latest")
-                }
+		script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+		}
 	    }
         }
     }
