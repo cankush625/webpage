@@ -1,5 +1,5 @@
 pipeline {
-    agent any    
+    agent any
     stages {
         def app
         stage('Clone repository') {
@@ -42,7 +42,7 @@ pipeline {
     }
 
     post {
-        seccess {
+        sUccess {
             echo "All stages are built successfully!"
         }
     }
