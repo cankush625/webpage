@@ -13,7 +13,9 @@ pipeline {
             /* This builds the actual image; synonymous to
              * docker build on the command line */
 	    steps {
-                app = docker.build("cankush625/webpage")
+		script {
+                    app = docker.build("cankush625/webpage")
+		}
 	    }
         }
 
@@ -32,7 +34,9 @@ pipeline {
         stage('Run image') {
             /*Run an image to start services*/
 	    steps {
-                docker.image("cankush625/webpage").run('-p 80:80')
+		script {
+                    docker.image("cankush625/webpage").run('-p 80:80')
+	        }
 	    }
         }
 
