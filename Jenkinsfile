@@ -4,15 +4,17 @@ pipeline {
         def app
         stage('Clone repository') {
             /* Let's make sure we have the repository cloned to our workspace */
-
-            checkout scm
+	    steps {
+                checkout scm
+	    }
         }
 
         stage('Build image') {
             /* This builds the actual image; synonymous to
              * docker build on the command line */
-
-            app = docker.build("cankush625/webpage")
+	    steps {
+                app = docker.build("cankush625/webpage")
+	    }
         }
 
         stage('Test image') {
@@ -26,7 +28,9 @@ pipeline {
 
         stage('Run image') {
             /*Run an image to start services*/
-            docker.image("cankush625/webpage").run('-p 80:80')
+	    steps {
+                docker.image("cankush625/webpage").run('-p 80:80')
+	    }
         }
 
         stage('Push image') {
@@ -42,7 +46,7 @@ pipeline {
     }
 
     post {
-        sUccess {
+        success {
             echo "All stages are built successfully!"
         }
     }
